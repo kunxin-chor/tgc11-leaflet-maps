@@ -5,7 +5,17 @@ function main() {
         map = initMap();
         let searchResultLayer = L.layerGroup();
         window.addEventListener('DOMContentLoaded', () => {
-            
+
+            document.querySelector('#toggle-search-btn').addEventListener('click', async ()=>{
+                let currentDisplay = document.querySelector("#search-container").style.display;
+                if (! currentDisplay || currentDisplay == 'none') {
+                    document.querySelector("#search-container").style.display="block";
+                } else {
+                    document.querySelector("#search-container").style.display="none";
+                }
+                
+            })
+
             document.querySelector('#search-btn').addEventListener('click', async ()=>{
                 let query = document.querySelector('#search-input').value;
                 let center = map.getBounds().getCenter();
@@ -27,6 +37,10 @@ function main() {
                     // display search results
                     let resultElement =document.createElement('div');
                     resultElement.innerHTML = eachVenue.name;
+                    resultElement.addEventListener('click', ()=>{
+                        map.flyTo([eachVenue.location.lat, eachVenue.location.lng], 16);
+                        marker.openPopup();
+                    })
                     
                     searchResults.appendChild(resultElement);
                 }
