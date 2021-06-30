@@ -25,24 +25,12 @@ function main() {
                 // remove results from the previous search
                 searchResultLayer.clearLayers();
 
-                let searchResults = document.querySelector('#search-results');
+                let searchResultDiv = document.querySelector('#search-results');
 
                 for(let eachVenue of results.response.venues) {
                     // create a marker for each location
-                    let marker = L.marker([eachVenue.location.lat, eachVenue.location.lng]);
-                    marker.bindPopup(`<div><h1>${eachVenue.name}</h1>`);
-                    marker.addTo(searchResultLayer);
-                    searchMarkers.push(marker);
+                    addSearchResultToMap(map, searchResultLayer, searchResultDiv, eachVenue, searchMarkers);
 
-                    // display search results
-                    let resultElement =document.createElement('div');
-                    resultElement.innerHTML = eachVenue.name;
-                    resultElement.addEventListener('click', ()=>{
-                        map.flyTo([eachVenue.location.lat, eachVenue.location.lng], 16);
-                        marker.openPopup();
-                    })
-                    
-                    searchResults.appendChild(resultElement);
                 }
 
                 // display the search result layer if it is not displayed
